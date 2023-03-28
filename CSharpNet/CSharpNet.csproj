@@ -14,16 +14,28 @@
 		<PackageRequireLicenseAcceptance>False</PackageRequireLicenseAcceptance>
 		<PackageProjectUrl>https://github.com/mhrnbzrafkn/CSharpNet.git</PackageProjectUrl>
 		<PackageIcon>PackageIcon.png</PackageIcon>
+		<NeutralLanguage>en</NeutralLanguage>
+		<PackageReleaseNotes>deep neural network added.</PackageReleaseNotes>
+		<PackageId>CSharpNet</PackageId>
+		<Company>MhrnBzrafkn</Company>
+		<Product>CSharpNet</Product>
+		<Version>2.0.0</Version>
+		<FileVersion>2.0.0</FileVersion>
+		<AssemblyVersion>2.0.0</AssemblyVersion>
 	</PropertyGroup>
 
 	<ItemGroup>
-		<None Update="wwwroot\PackageIcon.png">
+		<None Update="PackageIcon.png">
 			<Pack>True</Pack>
 			<PackagePath>\</PackagePath>
 		</None>
 		<None Include="..\LICENSE">
 			<Pack>True</Pack>
 			<PackagePath>\</PackagePath>
+		</None>
+		<None Include="..\PackageIcon.png">
+		  <Pack>True</Pack>
+		  <PackagePath>\</PackagePath>
 		</None>
 		<None Include="..\README.md">
 			<Pack>True</Pack>
