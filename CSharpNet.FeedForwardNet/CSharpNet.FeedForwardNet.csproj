@@ -2,10 +2,37 @@
 
 	<PropertyGroup>
 		<TargetFramework>net6.0</TargetFramework>
+		<Title>Neural Network With CSharp</Title>
+		<Authors>Mhrn Bzrafkn</Authors>
+		<Description>Simple Implementation Of Feed Forward Neural Network With CSharp.</Description>
+		<Copyright>Copyright (c) 2023 Mhrn Bzrafkn</Copyright>
+		<PackageReadmeFile>README.md</PackageReadmeFile>
+		<RepositoryUrl>https://github.com/mhrnbzrafkn/CSharpNet.git</RepositoryUrl>
+		<RepositoryType>git</RepositoryType>
+		<PackageTags>NeuralNetwork</PackageTags>
+		<PackageLicenseFile>LICENSE</PackageLicenseFile>
+		<PackageRequireLicenseAcceptance>False</PackageRequireLicenseAcceptance>
+		<PackageProjectUrl>https://github.com/mhrnbzrafkn/CSharpNet.git</PackageProjectUrl>
+		<PackageIcon>PackageIcon.png</PackageIcon>
 	</PropertyGroup>
+
+	<ItemGroup>
+		<None Update="wwwroot\PackageIcon.png">
+			<Pack>True</Pack>
+			<PackagePath>\</PackagePath>
+		</None>
+		<None Include="..\LICENSE">
+			<Pack>True</Pack>
+			<PackagePath>\</PackagePath>
+		</None>
+		<None Include="..\README.md">
+			<Pack>True</Pack>
+			<PackagePath>\</PackagePath>
+		</None>
+	</ItemGroup>
 
 	<ItemGroup>
 		<PackageReference Include="System.Drawing.Common" Version="7.0.0" />
 	</ItemGroup>
-
+	
 </Project>
