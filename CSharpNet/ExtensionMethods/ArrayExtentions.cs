@@ -1,4 +1,6 @@
-﻿namespace SimpleDeepNet.ExtensionMethods;
+﻿using System;
+
+namespace SimpleDeepNet.ExtensionMethods;
 
 public static class ArrayExtentions
 {
