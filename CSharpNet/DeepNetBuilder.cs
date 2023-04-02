@@ -28,6 +28,12 @@ public class DeepNetBuilder
         }
     }
 
+    public DeepNetBuilder()
+    {
+        HiddenValues = new List<double[]>();
+        Weights = new List<double[,]>();
+    }
+
     public double[] FeedForward(double[] input)
     {
         HiddenValues = new List<double[]>();
@@ -143,19 +149,22 @@ public class DeepNetBuilder
 
     public void Save(string path)
     {
-        string json = JsonSerializer.Serialize(this);
+        var model = new JsonDeepNetModel(this);
+        var json = JsonSerializer.Serialize(model);
         File.WriteAllText(path, json);
     }
 
     public static DeepNetBuilder LoadModel(string path)
     {
         var file = File.ReadAllText(path);
-        var nn = JsonSerializer.Deserialize<DeepNetBuilder>(file);
+        var deepNetModel = JsonSerializer.Deserialize<JsonDeepNetModel>(file);
 
-        if (nn == null)
+        if (deepNetModel == null)
             throw new Exception("Couldn't Find Model File..");
 
-        return nn;
+        var deepNet = JsonDeepNetModel.Deserialize(deepNetModel);
+
+        return deepNet;
     }
 }
 
@@ -175,5 +184,37 @@ public class Matrix
         }
 
         return matrix;
+    }
+}
+
+public class JsonDeepNetModel
+{
+    public double LearningRate { get; set; }
+    public int[] Layers { get; set; }
+    public List<double[]> HiddenValues { get; set; }
+    public List<double[][]> Weights { get; set; }
+
+    public JsonDeepNetModel()
+    {
+
+    }
+
+    public JsonDeepNetModel(DeepNetBuilder deepNet)
+    {
+        LearningRate = deepNet.LearningRate;
+        Layers = deepNet.Layers; HiddenValues = deepNet.HiddenValues;
+        Weights = deepNet.Weights.SerializeToJsonArray();
+    }
+
+    public static DeepNetBuilder Deserialize(JsonDeepNetModel model)
+    {
+        var deepNet = new DeepNetBuilder();
+
+        deepNet.LearningRate = model.LearningRate;
+        deepNet.Layers = model.Layers;
+        deepNet.HiddenValues = model.HiddenValues;
+        deepNet.Weights = model.Weights.DeserializeTo2DArray();
+
+        return deepNet;
     }
 }

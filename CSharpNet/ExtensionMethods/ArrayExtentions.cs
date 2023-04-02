@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace SimpleDeepNet.ExtensionMethods;
 
@@ -116,5 +117,56 @@ public static class ArrayExtentions
         }
 
         return result;
+    }
+
+    public static List<double[][]> SerializeToJsonArray(this List<double[,]> arrays)
+    {
+        var outputList = new List<double[][]>();
+        for (int arrayIndex = 0; arrayIndex < arrays.Count; arrayIndex++)
+        {
+            var rows = arrays[arrayIndex].GetLength(0);
+            var cols = arrays[arrayIndex].GetLength(1);
+
+            var result = new double[rows][];
+
+            for (int i = 0; i < rows; i++)
+            {
+                result[i] = new double[cols];
+                for (int ii = 0; ii < cols; ii++)
+                {
+                    result[i][ii] = arrays[arrayIndex][i, ii];
+                }
+            }
+
+            outputList.Add(result);
+        }
+
+
+        return outputList;
+    }
+
+    public static List<double[,]> DeserializeTo2DArray(this List<double[][]> arrays)
+    {
+        var outputList = new List<double[,]>();
+        for (int arrayIndex = 0; arrayIndex < arrays.Count; arrayIndex++)
+        {
+            var rows = arrays[arrayIndex].Length;
+            var cols = arrays[arrayIndex][0].Length;
+
+            var result = new double[rows, cols];
+
+            for (int i = 0; i < rows; i++)
+            {
+                for (int ii = 0; ii < cols; ii++)
+                {
+                    result[i, ii] = arrays[arrayIndex][i][ii];
+                }
+            }
+
+            outputList.Add(result);
+        }
+
+
+        return outputList;
     }
 }
