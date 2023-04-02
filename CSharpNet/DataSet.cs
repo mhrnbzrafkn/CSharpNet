@@ -2,7 +2,7 @@
 using System.Drawing;
 using System.IO;
 
-namespace CSharpNet.FeedForwardNet;
+namespace CSharpNet;
 
 public class DataSet
 {

@@ -1,32 +1,32 @@
-﻿using System;
-
-namespace CSharpNet.FeedForwardNet.ExtensionMethods;
+﻿namespace SimpleDeepNet.ExtensionMethods;
 
 public static class ArrayExtentions
 {
-    public static double[,] Mul(this double[,] arr1, double[,] arr2)
+    public static double[,] Multiply(this double[,] matrix1, double[,] matrix2)
     {
-        int rows1 = arr1.GetLength(0);
-        int cols1 = arr1.GetLength(1);
-        int rows2 = arr2.GetLength(0);
-        int cols2 = arr2.GetLength(1);
+        var matrix1Rows = matrix1.GetLength(0);
+        var matrix1Cols = matrix1.GetLength(1);
+        var matrix2Rows = matrix2.GetLength(0);
+        var matrix2Cols = matrix2.GetLength(1);
 
-        if (cols1 != rows2)
+        if (matrix1Cols != matrix2Rows)
         {
-            throw new ArgumentException("The number of columns in the first array must match the number of rows in the second array.");
+            throw new Exception("the Number Of First Matrix Columns Should Be Equal With Number Of Rows In Second Matrix");
         }
 
-        double[,] result = new double[rows1, cols2];
+        var result = new double[matrix1Rows, matrix2Cols];
 
-        for (int i = 0; i < rows1; i++)
+        for (int i = 0; i < matrix1Rows; i++)
         {
-            for (int j = 0; j < cols2; j++)
+            for (int j = 0; j < matrix2Cols; j++)
             {
-                double sum = 0;
-                for (int k = 0; k < cols1; k++)
+                double sum = 0.0;
+
+                for (int k = 0; k < matrix1Cols; k++)
                 {
-                    sum += arr1[i, k] * arr2[k, j];
+                    sum += matrix1[i, k] * matrix2[k, j];
                 }
+
                 result[i, j] = sum;
             }
         }
@@ -34,163 +34,85 @@ public static class ArrayExtentions
         return result;
     }
 
-    public static double[] Mul(this double[] array1, double[][] array2)
+    public static double[] Multiply(this double[] array1, double[,] matrix2)
     {
-        int rows1 = 1;
-        int cols1 = array1.Length;
-        int rows2 = array2.Length;
-        int cols2 = array2[0].Length;
+        var array1Rows = 1;
+        var array1Cols = array1.Length;
+        var matrix2Rows = matrix2.GetLength(0);
+        var matrix2Cols = matrix2.GetLength(1);
 
-        if (cols1 != rows2)
+        if (array1Cols != matrix2Rows)
         {
-            throw new ArgumentException("The number of columns in the first array must match the number of rows in the second array.");
+            throw new Exception("the Number Of First Matrix Columns Should Be Equal With Number Of Rows In Second Matrix");
         }
 
-        double[] result = new double[rows1 * cols2];
-        for (int i = 0; i < rows1; i++)
+        var result = new double[matrix2Cols];
+
+        for (int i = 0; i < array1Rows; i++)
         {
-            for (int j = 0; j < cols2; j++)
+            for (int j = 0; j < matrix2Cols; j++)
             {
-                double sum = 0;
-                for (int k = 0; k < cols1; k++)
+                double sum = 0.0;
+
+                for (int k = 0; k < array1Cols; k++)
                 {
-                    sum += array1[k] * array2[k][j];
+                    sum += array1[k] * matrix2[k, j];
                 }
-                result[i + j] = sum;
+
+                result[j] = sum;
             }
         }
 
         return result;
     }
 
-    public static double[] Mul(this double[] array1, double[] array2)
+    public static double[] Subtract(this double[] array1, double[] array2)
     {
-        var newArray = new double[array1.Length];
+        if (array1.Length != array2.Length)
+        {
+            throw new Exception("Two Arrays Should Have Equal Lenght");
+        }
+
+        var result = new double[array1.Length];
+
         for (int i = 0; i < array1.Length; i++)
         {
-            newArray[i] = array1[i] * array2[i];
+            result[i] = array1[i] - array2[i];
         }
 
-        return newArray;
+        return result;
     }
 
-    public static double[] Sub(this double[] array1, double[] array2)
+    public static double[,] Transpose(this double[,] matrix)
     {
-        var errors = new double[array1.Length];
-        for (int i = 0; i < array1.Length; i++)
-        {
-            errors[i] = array1[i] - array2[i];
-        }
+        var rows = matrix.GetLength(0);
+        var cols = matrix.GetLength(1);
 
-        return errors;
-    }
-
-    public static double[] Sub(this int num, double[] array)
-    {
-        var newValues = new double[array.Length];
-        for (int i = 0; i < array.Length; i++)
-        {
-            newValues[i] = num - array[i];
-        }
-
-        return newValues;
-    }
-
-    public static double[][] Dot(this double num, double[][] array)
-    {
-        var newValues = new double[array.Length][];
-        var rows = array.Length;
-        var cols = array[0].Length;
-        for (int i = 0; i < rows; i++)
-        {
-            newValues[i] = new double[cols];
-            for (int ii = 0; ii < cols; ii++)
-            {
-                newValues[i][ii] = num * array[i][ii];
-            }
-        }
-
-        return newValues;
-    }
-
-    public static double[] Dot(this double num, double[] array)
-    {
-        var newValues = new double[array.Length];
-        for (int i = 0; i < array.Length; i++)
-        {
-            newValues[i] = num * array[i];
-        }
-
-        return newValues;
-    }
-
-    public static double[][] Sum(this double[][] array1, double[][] array2)
-    {
-        var newArray = new double[array1.Length][];
-        var rows = array1.Length;
-        var cols = array2[0].Length;
+        var result = new double[cols, rows];
 
         for (int i = 0; i < rows; i++)
         {
-            newArray[i] = new double[cols];
             for (int ii = 0; ii < cols; ii++)
             {
-                newArray[i][ii] = array1[i][ii] + array2[i][ii];
+                result[ii, i] = matrix[i, ii];
             }
         }
 
-        return newArray;
+        return result;
     }
 
-    public static double[][] T(this double[][] array)
+    public static double[,] ConvertTo2DMatrix(this double[] array)
     {
-        var rows = array.Length;
-        var cols = array[0].Length;
-        var newArray = new double[cols][];
+        var rows = 1;
+        var cols = array.Length;
+
+        var result = new double[rows, cols];
+
         for (int i = 0; i < cols; i++)
         {
-            newArray[i] = new double[rows];
-            for (int ii = 0; ii < rows; ii++)
-            {
-                newArray[i][ii] = array[ii][i];
-            }
+            result[0, i] = array[i];
         }
 
-        return newArray;
-    }
-
-    public static double[][] outer(this double[] array1, double[] array2)
-    {
-        var rows = array1.Length;
-        var cols = array2.Length;
-        var outer = new double[array1.Length][];
-        for (int i = 0; i < rows; i++)
-        {
-            outer[i] = new double[cols];
-            for (int ii = 0; ii < cols; ii++)
-            {
-                outer[i][ii] = array1[i] * array2[ii];
-            }
-        }
-
-        return outer;
-    }
-
-    public static double[] ConvertToFlat(this double[,] array)
-    {
-        var rows = array.GetLength(0);
-        var cols = array.GetLength(1);
-        var flatArray = new double[rows * cols];
-
-        for (int row = 0; row < rows; row++)
-        {
-            for (int col = 0; col < cols; col++)
-            {
-                var flatIndex = row * cols + col;
-                flatArray[flatIndex] = array[row, col];
-            }
-        }
-
-        return flatArray;
+        return result;
     }
 }
