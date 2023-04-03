@@ -33,7 +33,7 @@ public class DataSet
             var doubleImage = ConvertToDoubleMatrix(image);
             var oneDImage = ConvertToOneDMatxi(doubleImage);
             var normalizedImage = NormalizeData(oneDImage);
-            AddNewData(normalizedImage, new double[] { 1, 0 });
+            AddNewData(normalizedImage, new double[] { 1, -1 });
         }
 
         var negativeFilesPath = dataPath + "\\n";
@@ -44,7 +44,7 @@ public class DataSet
             var doubleImage = ConvertToDoubleMatrix(image);
             var oneDImage = ConvertToOneDMatxi(doubleImage);
             var normalizedImage = NormalizeData(oneDImage);
-            AddNewData(normalizedImage, new double[] { 0, 1 });
+            AddNewData(normalizedImage, new double[] { -1, 1 });
         }
 
         var testFilesPath = dataPath + "\\test";
