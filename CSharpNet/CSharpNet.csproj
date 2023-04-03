@@ -19,9 +19,9 @@
 		<PackageId>CSharpNet</PackageId>
 		<Company>MhrnBzrafkn</Company>
 		<Product>CSharpNet</Product>
-		<Version>3.2.2</Version>
-		<FileVersion>3.2.2</FileVersion>
-		<AssemblyVersion>3.2.2</AssemblyVersion>
+		<Version>3.5.0</Version>
+		<FileVersion>3.5.0</FileVersion>
+		<AssemblyVersion>3.5.0</AssemblyVersion>
 	</PropertyGroup>
 
 	<ItemGroup>
