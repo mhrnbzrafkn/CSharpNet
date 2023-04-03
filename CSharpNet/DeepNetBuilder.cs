@@ -179,7 +179,7 @@ public class Matrix
         {
             for (int col = 0; col < cols; col++)
             {
-                matrix[row, col] = rnd.NextDouble();
+                matrix[row, col] = (double)rnd.Next(-10000, 10000) / 10000;
             }
         }
 
