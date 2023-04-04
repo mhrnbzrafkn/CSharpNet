@@ -17,19 +17,19 @@ public class DataSet
         TestData = new List<double[,]>();
     }
 
-    public void AddNewData(double[,] data, double[] actualOutput)
+    private void AddNewData(double[,] data, double[] actualOutput)
     {
         Data.Add(data);
         ActualOutputs.Add(actualOutput);
     }
 
-    public void LoadDataFromFolder(string dataPath)
+    public void LoadDataFromFolder(string dataPath, int imageWidth, int imageHeight)
     {
         var positiveFilesPath = dataPath + "\\p";
         var positiveFiles = Directory.GetFiles(positiveFilesPath);
         foreach (var positiveImagePath in positiveFiles)
         {
-            var image = LoadImage(positiveImagePath);
+            var image = LoadImage(positiveImagePath, imageWidth, imageHeight);
             var doubleImage = ConvertToDoubleMatrix(image);
             var oneDImage = ConvertToOneDMatxi(doubleImage);
             var normalizedImage = NormalizeData(oneDImage);
@@ -40,7 +40,7 @@ public class DataSet
         var negativeFiles = Directory.GetFiles(negativeFilesPath);
         foreach (var negativeImagePath in negativeFiles)
         {
-            var image = LoadImage(negativeImagePath);
+            var image = LoadImage(negativeImagePath, imageWidth, imageHeight);
             var doubleImage = ConvertToDoubleMatrix(image);
             var oneDImage = ConvertToOneDMatxi(doubleImage);
             var normalizedImage = NormalizeData(oneDImage);
@@ -51,7 +51,7 @@ public class DataSet
         var testFiles = Directory.GetFiles(testFilesPath);
         foreach (var testImagePath in testFiles)
         {
-            var image = LoadImage(testImagePath);
+            var image = LoadImage(testImagePath, imageWidth, imageHeight);
             var doubleImage = ConvertToDoubleMatrix(image);
             var oneDImage = ConvertToOneDMatxi(doubleImage);
             var normalizedImage = NormalizeData(oneDImage);
@@ -59,7 +59,7 @@ public class DataSet
         }
     }
 
-    public double[,] NormalizeData(double[,] data)
+    private double[,] NormalizeData(double[,] data)
     {
         int cols = data.GetLength(1);
         double[,] normalizedData = new double[1, cols];
@@ -73,7 +73,7 @@ public class DataSet
         return normalizedData;
     }
 
-    public double[,] ConvertToOneDMatxi(double[,] image)
+    private double[,] ConvertToOneDMatxi(double[,] image)
     {
         int rows = image.GetLength(0);
         int cols = image.GetLength(1);
@@ -92,10 +92,10 @@ public class DataSet
         return doubleArray;
     }
 
-    public int[,] LoadImage(string imagePath)
+    private int[,] LoadImage(string imagePath, int imageWidth, int imageHeight)
     {
         var originalImage = new Bitmap(imagePath);
-        var bitmap = new Bitmap(originalImage, 32, 32);
+        var bitmap = new Bitmap(originalImage, imageWidth, imageHeight);
 
         // Create a matrix to hold the pixel data
         int[,] matrix = new int[bitmap.Width, bitmap.Height];
@@ -117,7 +117,7 @@ public class DataSet
         return matrix;
     }
 
-    public double[,] ConvertToDoubleMatrix(int[,] intMatrix)
+    private double[,] ConvertToDoubleMatrix(int[,] intMatrix)
     {
         int rows = intMatrix.GetLength(0);
         int cols = intMatrix.GetLength(1);
