@@ -169,4 +169,14 @@ public static class ArrayExtentions
 
         return outputList;
     }
+
+    public static double[] Sumation(this double[] array, double collector)
+    {
+        for (int i = 0; i < array.Length; i++)
+        {
+            array[i] = array[i] + collector;
+        }
+
+        return array;
+    }
 }

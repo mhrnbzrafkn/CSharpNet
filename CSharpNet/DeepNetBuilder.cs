@@ -11,6 +11,7 @@ public class DeepNetBuilder
 {
     public double LearningRate { get; set; }
     public int[] Layers { get; set; }
+    public double[] Biases { get; set; }
     public List<double[]> HiddenValues { get; set; }
     public List<double[,]> Weights { get; set; }
 
@@ -18,6 +19,14 @@ public class DeepNetBuilder
     {
         LearningRate = learningRate;
         Layers = layers;
+
+        var rnd = new Random();
+        Biases = new double[layers.Length];
+        for (int i = 0; i < Biases.Length; i++)
+        {
+            Biases[i] = rnd.NextDouble();
+        }
+
         Weights = new List<double[,]>();
         HiddenValues = new List<double[]>();
 
@@ -38,12 +47,12 @@ public class DeepNetBuilder
     {
         HiddenValues = new List<double[]>();
 
-        var hiddenLayerOutput = input.Multiply(Weights[0]);
+        var hiddenLayerOutput = input.Multiply(Weights[0]).Sumation(Biases[0]);
         HiddenValues.Add(hiddenLayerOutput);
 
         for (int i = 1; i < Weights.Count; i++)
         {
-            hiddenLayerOutput = hiddenLayerOutput.Multiply(Weights[i]);
+            hiddenLayerOutput = hiddenLayerOutput.Multiply(Weights[i]).Sumation(Biases[i]);
             if (i < Weights.Count - 1)
                 HiddenValues.Add(hiddenLayerOutput);
         }
@@ -51,12 +60,26 @@ public class DeepNetBuilder
         return hiddenLayerOutput;
     }
 
-    public void Backpropagate(double[] inputs, double[] expectedOutput)
+    public double Backpropagate(double[] inputs, double[] expectedOutput)
     {
         var actualOutput = FeedForward(inputs);
-        var deltas = expectedOutput.Subtract(actualOutput).ConvertTo2DMatrix();
+        var deltas = expectedOutput.Subtract(actualOutput);
+        var TwoDDeltas = deltas.ConvertTo2DMatrix();
 
-        // update hidden-output weights
+        var error = 0.0;
+        var deltasSum = deltas.Sum();
+        for (int i = 0; i < deltas.Length; i++)
+        {
+            error += (deltas[i] / deltasSum) * deltas[i];
+        }
+
+        // update hidden-output weights and bias
+        var biasIndes = Biases.Length - 1;
+        for (int i = 0; i < TwoDDeltas.Length; i++)
+        {
+            Biases[biasIndes] -= LearningRate * TwoDDeltas[0, i];
+        }
+
         for (int i = 0; i < Weights.Last().GetLength(0); i++)
         {
             for (int ii = 0; ii < Weights.Last().GetLength(1); ii++)
@@ -72,25 +95,42 @@ public class DeepNetBuilder
         if (Layers.Length <= 3)
         {
             var transposedHiddenWeights = Weights[1].Transpose();
-            deltas = deltas.Multiply(transposedHiddenWeights);
+            TwoDDeltas = TwoDDeltas.Multiply(transposedHiddenWeights);
+
+            for (int i = 0; i < TwoDDeltas.Length; i++)
+            {
+                Biases[1] -= LearningRate * TwoDDeltas[0, i];
+            }
         }
 
-        // update hidden weights
+        // update hidden weights and bias
         if (Layers.Length > 3)
         {
             var transposedHiddenWeights = Weights[Weights.Count - 1].Transpose();
-            deltas = deltas.Multiply(transposedHiddenWeights);
+            TwoDDeltas = TwoDDeltas.Multiply(transposedHiddenWeights);
+
+            var biasIndex = Biases.Length - 2;
+            for (int i = 0; i < TwoDDeltas.Length; i++)
+            {
+                Biases[biasIndex] -= LearningRate * TwoDDeltas[0, i];
+            }
 
             for (int i = Weights.Count - 2; i > 0; i--)
             {
                 transposedHiddenWeights = Weights[i].Transpose();
-                deltas = deltas.Multiply(transposedHiddenWeights);
+                TwoDDeltas = TwoDDeltas.Multiply(transposedHiddenWeights);
+
+                for (int deltaIndex = 0; deltaIndex < TwoDDeltas.Length; deltaIndex++)
+                {
+                    Biases[i] -= LearningRate * TwoDDeltas[0, deltaIndex];
+                }
+
                 for (int ii = 0; ii < Weights[i].GetLength(0); ii++)
                 {
                     for (int iii = 0; iii < Weights[i].GetLength(1); iii++)
                     {
                         Weights[i][ii, iii] = CalculateNewWeight(
-                        deltas[0, ii],
+                        TwoDDeltas[0, ii],
                         HiddenValues[i - 1][ii],
                         Weights[i][ii, iii]);
                     }
@@ -98,17 +138,71 @@ public class DeepNetBuilder
             }
         }
 
-        // update input-hidden weights
+        // update input-hidden weights and bias
         var transposedWeights = Weights.First().Transpose();
-        deltas = deltas.Multiply(transposedWeights);
+        TwoDDeltas = TwoDDeltas.Multiply(transposedWeights);
+
+        for (int i = 0; i < TwoDDeltas.Length; i++)
+        {
+            Biases[0] -= LearningRate * TwoDDeltas[0, i];
+        }
+
         for (int i = 0; i < Weights.First().GetLength(0); i++)
         {
             for (int ii = 0; ii < Weights.First().GetLength(1); ii++)
             {
                 Weights.First()[i, ii] = CalculateNewWeight(
-                    deltas[0, i],
+                    TwoDDeltas[0, i],
                     inputs[i],
                     Weights.First()[i, ii]);
+            }
+        }
+
+        // return error
+        return Math.Abs(error) * 100;
+    }
+
+    public void Train(List<double[]> inputs, List<double[]> outputs, int iterationNumber, double threshold)
+    {
+        if (inputs.Count != outputs.Count)
+            throw new Exception("Inconsistency Between The Number Of Input And Output Data.");
+
+        if (threshold <= 0 || threshold > 1)
+            throw new Exception("Enter Threshold Value Between 0 And 1.");
+
+        var previousError = 0.0;
+        for (int i = 1; i <= iterationNumber; i++)
+        {
+            var error = 0.0;
+
+            for (int ii = 0; ii < inputs.Count; ii++)
+            {
+                error += Backpropagate(inputs[ii], outputs[ii]);
+            }
+
+            var totalError = error / inputs.Count;
+            Console.WriteLine($"iteration <{i}> - Error <{totalError}>");
+
+            if (previousError == 0.0)
+            {
+                previousError = totalError;
+            }
+
+            else if (totalError > previousError)
+            {
+                if (totalError - previousError > threshold * 100)
+                {
+                    Console.WriteLine("Threshold Crossed.");
+                    break;
+                }
+            }
+
+            previousError = totalError;
+
+            if (totalError < threshold * 10)
+            {
+                Console.WriteLine("Maximum Optimization For This Initial Reached.");
+                break;
             }
         }
     }
@@ -119,7 +213,7 @@ public class DeepNetBuilder
         double neuronValue,
         double weightValue)
     {
-        var delta = -(expectedOutput - actualOutput) * (Sigmoid(neuronValue * weightValue)) * (1 - Sigmoid(neuronValue * weightValue)) * neuronValue;
+        var delta = -(expectedOutput - actualOutput) * SigmoidDerivative(neuronValue * weightValue) * neuronValue;
         var newWeight = weightValue - LearningRate * delta;
 
         return newWeight;
@@ -130,7 +224,7 @@ public class DeepNetBuilder
         double neuronValue,
         double weightValue)
     {
-        var delta = -(error) * (Sigmoid(neuronValue * weightValue)) * (1 - Sigmoid(neuronValue * weightValue)) * neuronValue;
+        var delta = -(error) * SigmoidDerivative(neuronValue * weightValue) * neuronValue;
         var newWeight = weightValue - LearningRate * delta;
 
         return newWeight;
