@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
+  <metadata>
+    <id>CSharpNet</id>
+    <version>3.6.2</version>
+    <title>Neural Network With CSharp</title>
+    <authors>Mhrn Bzrafkn</authors>
+    <requireLicenseAcceptance>true</requireLicenseAcceptance>
+    <license type="file">LICENSE</license>
+    <licenseUrl>https://aka.ms/deprecateLicenseUrl</licenseUrl>
+    <icon>PackageIcon.png</icon>
+    <readme>README.md</readme>
+    <projectUrl>https://github.com/mhrnbzrafkn/CSharpNet.git</projectUrl>
+    <description>Simple Implementation Of Deep Neural Network With CSharp.</description>
+    <releaseNotes>Package Structure Changed.</releaseNotes>
+    <copyright>Copyright (c) 2023 Mhrn Bzrafkn</copyright>
+    <tags>NeuralNetwork DeepNeuralNetwork AI</tags>
+    <repository type="git" url="https://github.com/mhrnbzrafkn/CSharpNet.git" />
+    <dependencies>
+      <group targetFramework="net6.0">
+        <dependency id="System.Drawing.Common" version="7.0.0" exclude="Build,Analyzers" />
+      </group>
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="D:\Programming\Nuget\CSharpNet\src\CSharpNet.Core\bin\Debug\net6.0\CSharpNet.Core.dll" target="lib\net6.0\CSharpNet.Core.dll" />
+    <file src="D:\Programming\Nuget\CSharpNet\PackageIcon.png" target="\PackageIcon.png" />
+    <file src="D:\Programming\Nuget\CSharpNet\README.md" target="\README.md" />
+    <file src="D:\Programming\Nuget\CSharpNet\LICENSE" target="\LICENSE" />
+  </files>
+</package>

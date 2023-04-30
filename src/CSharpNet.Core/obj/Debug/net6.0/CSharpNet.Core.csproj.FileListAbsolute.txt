@@ -1,0 +1,12 @@
+D:\Programming\Nuget\CSharpNet\src\CSharpNet.Core\bin\Debug\net6.0\CSharpNet.Core.deps.json
+D:\Programming\Nuget\CSharpNet\src\CSharpNet.Core\bin\Debug\net6.0\CSharpNet.Core.dll
+D:\Programming\Nuget\CSharpNet\src\CSharpNet.Core\bin\Debug\net6.0\ref\CSharpNet.Core.dll
+D:\Programming\Nuget\CSharpNet\src\CSharpNet.Core\bin\Debug\net6.0\CSharpNet.Core.pdb
+D:\Programming\Nuget\CSharpNet\src\CSharpNet.Core\obj\Debug\net6.0\CSharpNet.Core.csproj.AssemblyReference.cache
+D:\Programming\Nuget\CSharpNet\src\CSharpNet.Core\obj\Debug\net6.0\CSharpNet.Core.GeneratedMSBuildEditorConfig.editorconfig
+D:\Programming\Nuget\CSharpNet\src\CSharpNet.Core\obj\Debug\net6.0\CSharpNet.Core.AssemblyInfoInputs.cache
+D:\Programming\Nuget\CSharpNet\src\CSharpNet.Core\obj\Debug\net6.0\CSharpNet.Core.AssemblyInfo.cs
+D:\Programming\Nuget\CSharpNet\src\CSharpNet.Core\obj\Debug\net6.0\CSharpNet.Core.csproj.CoreCompileInputs.cache
+D:\Programming\Nuget\CSharpNet\src\CSharpNet.Core\obj\Debug\net6.0\CSharpNet.Core.dll
+D:\Programming\Nuget\CSharpNet\src\CSharpNet.Core\obj\Debug\net6.0\ref\CSharpNet.Core.dll
+D:\Programming\Nuget\CSharpNet\src\CSharpNet.Core\obj\Debug\net6.0\CSharpNet.Core.pdb
