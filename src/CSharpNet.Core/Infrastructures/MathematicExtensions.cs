@@ -231,31 +231,42 @@ public static class MathematicExtensions
 
     public static int ToInt(this string text)
     {
-        var output = 0;
         try
         {
-            output = int.Parse(text);
+            return int.Parse(text);
         }
         catch (Exception)
         {
             throw;
         }
-
-        return output;
     }
 
     public static float ToFloat(this string text)
     {
-        var output = 0.0f;
         try
         {
-            output = float.Parse(text);
+            return float.Parse(text);
         }
         catch (Exception)
         {
             throw;
         }
+    }
 
-        return output;
+    public static float[,] QuarterRightTurn(this float[,] matrix)
+    {
+        var rows = matrix.GetLength(0);
+        var cols = matrix.GetLength(1);
+        var result = new float[cols, rows];
+
+        for (int i = 0; i < cols; i++)
+        {
+            for (int j = rows - 1; j >= 0; j--)
+            {
+                result[i, rows - j - 1] = matrix[j, i];
+            }
+        }
+
+        return result;
     }
 }

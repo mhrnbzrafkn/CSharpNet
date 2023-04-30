@@ -1,4 +1,5 @@
 ﻿using CSharpNet.Infrastructures;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 
@@ -284,5 +285,38 @@ public class ImageProcessor
         }
 
         return matrix;
+    }
+
+    /// <summary>
+    /// Merge Images And Return One Image As Output
+    /// </summary>
+    /// <param name="images"></param>
+    /// <returns></returns>
+    public Image MergeImages(List<Bitmap> images)
+    {
+        var w = images.First().Width;
+        var h = images.First().Height;
+
+        var result = new Bitmap(w, h);
+
+        for (int i = 0; i < w; i++)
+        {
+            for (int j = 0; j < h; j++)
+            {
+                var totalPixelValue = 0;
+                foreach (var image in images)
+                {
+                    var pixelColors = image.GetPixel(i, j);
+                    var grayColor = (pixelColors.R + pixelColors.G + pixelColors.B) / 3;
+                    totalPixelValue += grayColor;
+                }
+                if (totalPixelValue > 255)
+                    totalPixelValue = 255;
+
+                result.SetPixel(i, j, Color.FromArgb(totalPixelValue, totalPixelValue, totalPixelValue));
+            }
+        }
+
+        return result;
     }
 }
