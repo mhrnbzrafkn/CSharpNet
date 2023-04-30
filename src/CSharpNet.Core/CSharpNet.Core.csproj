@@ -1,0 +1,46 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<PackageId>CSharpNet</PackageId>
+		<Company>MhrnBzrafkn</Company>
+		<Product>CSharpNet</Product>
+		<Version>3.6.2</Version>
+		<FileVersion>3.6.2</FileVersion>
+		<AssemblyVersion>3.6.2</AssemblyVersion>
+		<Title>Neural Network With CSharp</Title>
+		<Authors>Mhrn Bzrafkn</Authors>
+		<Description>Simple Implementation Of Deep Neural Network With CSharp.</Description>
+		<PackageTags>NeuralNetwork;DeepNeuralNetwork;AI</PackageTags>
+		<Copyright>Copyright (c) 2023 Mhrn Bzrafkn</Copyright>
+		<NeutralLanguage>en</NeutralLanguage>
+		<PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
+		<PackageReleaseNotes>Package Structure Changed.</PackageReleaseNotes>
+		<TargetFramework>net6.0</TargetFramework>
+		<RepositoryType>git</RepositoryType>
+		<RepositoryUrl>https://github.com/mhrnbzrafkn/CSharpNet.git</RepositoryUrl>
+		<PackageProjectUrl>https://github.com/mhrnbzrafkn/CSharpNet.git</PackageProjectUrl>
+		<PackageIcon>PackageIcon.png</PackageIcon>
+		<PackageReadmeFile>README.md</PackageReadmeFile>
+		<PackageLicenseFile>LICENSE</PackageLicenseFile>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<None Include="..\..\PackageIcon.png">
+			<Pack>True</Pack>
+			<PackagePath>\</PackagePath>
+		</None>
+		<None Include="..\..\README.md">
+			<Pack>True</Pack>
+			<PackagePath>\</PackagePath>
+		</None>
+		<None Include="..\..\LICENSE">
+			<Pack>True</Pack>
+			<PackagePath>\</PackagePath>
+		</None>
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="System.Drawing.Common" Version="7.0.0" />
+	</ItemGroup>
+
+</Project>

@@ -4,13 +4,16 @@ using System.IO;
 
 namespace CSharpNet;
 
-public class DataSet
+/// <summary>
+/// Loading Image DataSets
+/// </summary>
+public class DataSetLoader
 {
     public List<double[,]> Data { get; set; }
     public List<double[]> ActualOutputs { get; set; }
     public List<double[,]> TestData { get; set; }
 
-    public DataSet()
+    public DataSetLoader()
     {
         Data = new List<double[,]>();
         ActualOutputs = new List<double[]>();

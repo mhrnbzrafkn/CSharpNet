@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.4.33403.182
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSharpNet", "CSharpNet\CSharpNet.csproj", "{C15D1128-2BB6-40A5-A9BA-825B73B64D40}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSharpNet.Core", "src\CSharpNet.Core\CSharpNet.Core.csproj", "{C15D1128-2BB6-40A5-A9BA-825B73B64D40}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{81E55AE5-4298-45C6-9A65-25A0BB379FB9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -18,6 +20,9 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{C15D1128-2BB6-40A5-A9BA-825B73B64D40} = {81E55AE5-4298-45C6-9A65-25A0BB379FB9}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {59811FEE-3D68-4579-AA7A-18C74AC41656}

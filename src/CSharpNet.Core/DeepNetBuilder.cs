@@ -1,4 +1,4 @@
-﻿using SimpleDeepNet.ExtensionMethods;
+﻿using CSharpNet.Infrastructures;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -7,6 +7,9 @@ using System.Text.Json;
 
 namespace CSharpNet;
 
+/// <summary>
+/// Create Deep Neural Network With Custom Layers And Neurons
+/// </summary>
 public class DeepNetBuilder
 {
     public double LearningRate { get; set; }
@@ -32,7 +35,7 @@ public class DeepNetBuilder
 
         for (int i = 0; i < layers.Length - 1; i++)
         {
-            var newWeights = Matrix.Generate(layers[i], layers[i + 1]);
+            var newWeights = MatrixBuilder.Build(layers[i], layers[i + 1]);
             Weights.Add(newWeights);
         }
     }
@@ -259,5 +262,56 @@ public class DeepNetBuilder
         var deepNet = JsonDeepNetModel.Deserialize(deepNetModel);
 
         return deepNet;
+    }
+}
+
+public class JsonDeepNetModel
+{
+    public double LearningRate { get; set; }
+    public int[] Layers { get; set; }
+    public List<double[]> HiddenValues { get; set; }
+    public List<double[][]> Weights { get; set; }
+
+    public JsonDeepNetModel()
+    {
+
+    }
+
+    public JsonDeepNetModel(DeepNetBuilder deepNet)
+    {
+        LearningRate = deepNet.LearningRate;
+        Layers = deepNet.Layers; HiddenValues = deepNet.HiddenValues;
+        Weights = deepNet.Weights.SerializeToJsonArray();
+    }
+
+    public static DeepNetBuilder Deserialize(JsonDeepNetModel model)
+    {
+        var deepNet = new DeepNetBuilder();
+
+        deepNet.LearningRate = model.LearningRate;
+        deepNet.Layers = model.Layers;
+        deepNet.HiddenValues = model.HiddenValues;
+        deepNet.Weights = model.Weights.DeserializeTo2DArray();
+
+        return deepNet;
+    }
+}
+
+public class MatrixBuilder
+{
+    public static double[,] Build(int rows, int cols)
+    {
+        var matrix = new double[rows, cols];
+        var rnd = new Random();
+
+        for (int row = 0; row < rows; row++)
+        {
+            for (int col = 0; col < cols; col++)
+            {
+                matrix[row, col] = (double)rnd.Next(-10000, 10000) / 10000;
+            }
+        }
+
+        return matrix;
     }
 }

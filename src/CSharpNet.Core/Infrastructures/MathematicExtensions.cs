@@ -1,10 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace SimpleDeepNet.ExtensionMethods;
+namespace CSharpNet.Infrastructures;
 
-public static class ArrayExtentions
+public static class MathematicExtensions
 {
+    /// <summary>
+    /// Multiply 2 Dimensional Matrices
+    /// </summary>
+    /// <param name="matrix1"></param>
+    /// <param name="matrix2"></param>
+    /// <returns></returns>
+    /// <exception cref="Exception"></exception>
     public static double[,] Multiply(this double[,] matrix1, double[,] matrix2)
     {
         var matrix1Rows = matrix1.GetLength(0);
@@ -63,6 +70,30 @@ public static class ArrayExtentions
                 }
 
                 result[j] = sum;
+            }
+        }
+
+        return result;
+    }
+
+    public static int[,] Mul(this float[,] matrix1, int[,] matrix2)
+    {
+        var matrix1Rows = matrix1.GetLength(0);
+        var matrix1Columns = matrix1.GetLength(1);
+
+        var matrix2Rows = matrix2.GetLength(0);
+        var matrix2Columns = matrix2.GetLength(1);
+
+        if (matrix1Rows != matrix2Rows && matrix1Columns != matrix2Columns)
+            throw new Exception("Columns And Rows In Both Matrixes Should Be Equal.");
+
+        var result = new int[matrix1Rows, matrix1Columns];
+
+        for (int i = 0; i < matrix1Rows; i++)
+        {
+            for (int ii = 0; ii < matrix1Columns; ii++)
+            {
+                result[i, ii] = (int)(matrix1[i, ii] * matrix2[i, ii]);
             }
         }
 
@@ -178,5 +209,53 @@ public static class ArrayExtentions
         }
 
         return array;
+    }
+
+    public static int Sum(this int[,] matrix1)
+    {
+        var matrix1Rows = matrix1.GetLength(0);
+        var matrix1Columns = matrix1.GetLength(1);
+
+        var result = 0;
+
+        for (int i = 0; i < matrix1Rows; i++)
+        {
+            for (int ii = 0; ii < matrix1Columns; ii++)
+            {
+                result += matrix1[i, ii];
+            }
+        }
+
+        return result;
+    }
+
+    public static int ToInt(this string text)
+    {
+        var output = 0;
+        try
+        {
+            output = int.Parse(text);
+        }
+        catch (Exception)
+        {
+            throw;
+        }
+
+        return output;
+    }
+
+    public static float ToFloat(this string text)
+    {
+        var output = 0.0f;
+        try
+        {
+            output = float.Parse(text);
+        }
+        catch (Exception)
+        {
+            throw;
+        }
+
+        return output;
     }
 }
