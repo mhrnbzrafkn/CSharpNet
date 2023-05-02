@@ -73,15 +73,15 @@ Unlike the previous method, this method takes 2 list of data as input, each reco
 ```csharp
 var inputs = new List<double[]>()
 	{
-	    new double[2] { 1, 1 },
-        new double[2] { 2, 2 },
-        new double[2] { 3, 3 },
-    };
+		new double[2] { 1, 1 },
+        	new double[2] { 2, 2 },
+        	new double[2] { 3, 3 },
+	};
 var targets = new List<double[]>()
-    {
-	    new double[1] { 2 },
-        new double[1] { 4 },
-        new double[1] { 6 },
+	{
+		new double[1] { 2 },
+        	new double[1] { 4 },
+        	new double[1] { 6 },
 	};
 	
 nn.Train(inputs, targets, iterationNumber: 1000, threshold: 0.1);
