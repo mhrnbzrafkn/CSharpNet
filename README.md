@@ -1,5 +1,6 @@
+
 # CSharpNet
-simple implementation of neural network with C#.
+simple implementation of [Neural Network](https://medium.com/analytics-vidhya/what-is-a-neural-network-and-how-do-they-work-61b38d2720b8#:~:text=Neural%20networks%20are%20computational%20systems,of%20what%20the%20data%20is.) with C#.
 
 ## Descriptions
 With this library you can easily make a neural network and train it with data and predict output values.
@@ -62,7 +63,7 @@ In this example:
 - And the number of expected outputs should be 1 because the number of neural network outputs is 1.
 ```csharp
 var inputs = new double[2] { 1, 0 };
-var expectedOutput = new double[2] { 1 };
+var expectedOutput = new double[1] { 1 };
 nn.Backpropagate(inputs, expectedOutput);
 ```
 
@@ -76,7 +77,7 @@ var inputs = new List<double[]>()
         new double[2] { 2, 2 },
         new double[2] { 3, 3 },
     };
-    var targets = new List<double[]>()
+var targets = new List<double[]>()
     {
 	    new double[1] { 2 },
         new double[1] { 4 },
