@@ -4,9 +4,9 @@
 		<PackageId>CSharpNet</PackageId>
 		<Company>MhrnBzrafkn</Company>
 		<Product>CSharpNet</Product>
-		<Version>3.6.2</Version>
-		<FileVersion>3.6.2</FileVersion>
-		<AssemblyVersion>3.6.2</AssemblyVersion>
+		<Version>3.6.3</Version>
+		<FileVersion>3.6.3</FileVersion>
+		<AssemblyVersion>3.6.3</AssemblyVersion>
 		<Title>Neural Network With CSharp</Title>
 		<Authors>Mhrn Bzrafkn</Authors>
 		<Description>Simple Implementation Of Deep Neural Network With CSharp.</Description>
