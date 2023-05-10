@@ -24,20 +24,17 @@ public class DeepNetBuilder
         Layers = layers;
 
         var rnd = new Random();
-        Biases = new double[layers.Length];
-        for (int i = 0; i < Biases.Length; i++)
-        {
-            Biases[i] = rnd.NextDouble();
-        }
+        Biases = Enumerable.Range(0, Layers.Length)
+            .Select(i => rnd.NextDouble())
+            .ToArray();
 
-        Weights = new List<double[,]>();
-        HiddenValues = new List<double[]>();
+        Weights = Layers.Zip(Layers.Skip(1), (x, y) => (x, y))
+            .Select(layerSizes => MatrixBuilder.Build(layerSizes.x, layerSizes.y))
+            .ToList();
 
-        for (int i = 0; i < layers.Length - 1; i++)
-        {
-            var newWeights = MatrixBuilder.Build(layers[i], layers[i + 1]);
-            Weights.Add(newWeights);
-        }
+        HiddenValues = Layers.Skip(1)
+            .Select(layerSize => new double[layerSize])
+            .ToList();
     }
 
     public DeepNetBuilder()
@@ -69,12 +66,13 @@ public class DeepNetBuilder
         var deltas = expectedOutput.Subtract(actualOutput);
         var TwoDDeltas = deltas.ConvertTo2DMatrix();
 
-        var error = 0.0;
-        var deltasSum = deltas.Sum();
-        for (int i = 0; i < deltas.Length; i++)
-        {
-            error += (deltas[i] / deltasSum) * deltas[i];
-        }
+        //var error = 0.0;
+        //var deltasSum = deltas.Sum();
+        //for (int i = 0; i < deltas.Length; i++)
+        //{
+        //    error += (deltas[i] / deltasSum) * deltas[i];
+        //}
+        var error = deltas.Select(d => d * d).Sum() / deltas.Sum();
 
         // update hidden-output weights and bias
         var biasIndes = Biases.Length - 1;
