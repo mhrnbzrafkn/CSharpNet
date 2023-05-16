@@ -4,9 +4,9 @@
 		<PackageId>CSharpNet</PackageId>
 		<Company>MhrnBzrafkn</Company>
 		<Product>CSharpNet</Product>
-		<Version>3.6.3</Version>
-		<FileVersion>3.6.3</FileVersion>
-		<AssemblyVersion>3.6.3</AssemblyVersion>
+		<Version>3.7.0</Version>
+		<FileVersion>3.7.0</FileVersion>
+		<AssemblyVersion>3.7.0</AssemblyVersion>
 		<Title>Neural Network With CSharp</Title>
 		<Authors>Mhrn Bzrafkn</Authors>
 		<Description>Simple Implementation Of Deep Neural Network With CSharp.</Description>
@@ -14,7 +14,7 @@
 		<Copyright>Copyright (c) 2023 Mhrn Bzrafkn</Copyright>
 		<NeutralLanguage>en</NeutralLanguage>
 		<PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
-		<PackageReleaseNotes>Package Structure Changed.</PackageReleaseNotes>
+		<PackageReleaseNotes>Activation functions added.</PackageReleaseNotes>
 		<TargetFramework>net6.0</TargetFramework>
 		<RepositoryType>git</RepositoryType>
 		<RepositoryUrl>https://github.com/mhrnbzrafkn/CSharpNet.git</RepositoryUrl>
