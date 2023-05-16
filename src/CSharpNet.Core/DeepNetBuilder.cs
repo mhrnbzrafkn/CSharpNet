@@ -17,11 +17,13 @@ public class DeepNetBuilder
     public double[] Biases { get; set; }
     public List<double[]> HiddenValues { get; set; }
     public List<double[,]> Weights { get; set; }
+    public ActivationFunction ActivationFunction;
 
-    public DeepNetBuilder(int[] layers, double learningRate)
+    public DeepNetBuilder(int[] layers, double learningRate, ActivationFunction activationFunction)
     {
         LearningRate = learningRate;
         Layers = layers;
+        ActivationFunction = activationFunction;
 
         var rnd = new Random();
         Biases = Enumerable.Range(0, Layers.Length)
@@ -66,12 +68,6 @@ public class DeepNetBuilder
         var deltas = expectedOutput.Subtract(actualOutput);
         var TwoDDeltas = deltas.ConvertTo2DMatrix();
 
-        //var error = 0.0;
-        //var deltasSum = deltas.Sum();
-        //for (int i = 0; i < deltas.Length; i++)
-        //{
-        //    error += (deltas[i] / deltasSum) * deltas[i];
-        //}
         var error = deltas.Select(d => d * d).Sum() / deltas.Sum();
 
         // update hidden-output weights and bias
@@ -214,8 +210,33 @@ public class DeepNetBuilder
         double neuronValue,
         double weightValue)
     {
-        var delta = -(expectedOutput - actualOutput) * SigmoidDerivative(neuronValue * weightValue) * neuronValue;
-        var newWeight = weightValue - LearningRate * delta;
+        var delta = 0.0;
+        var newWeight = 0.0;
+
+
+        if (ActivationFunction == ActivationFunction.Sigmoid)
+        {
+            delta = -(expectedOutput - actualOutput) * SigmoidDerivative(neuronValue * weightValue) * neuronValue;
+            newWeight = weightValue - LearningRate * delta;
+        }
+
+        if (ActivationFunction == ActivationFunction.ReLU)
+        {
+            delta = -(expectedOutput - actualOutput) * ReLUDerivative(neuronValue * weightValue) * neuronValue;
+            newWeight = weightValue - LearningRate * delta;
+        }
+
+        if (ActivationFunction == ActivationFunction.Tanh)
+        {
+            delta = -(expectedOutput - actualOutput) * TanhDerivative(neuronValue * weightValue) * neuronValue;
+            newWeight = weightValue - LearningRate * delta;
+        }
+
+        if (ActivationFunction == ActivationFunction.Linear)
+        {
+            delta = -(expectedOutput - actualOutput) * LinearDerivative(neuronValue * weightValue) * neuronValue;
+            newWeight = weightValue - LearningRate * delta;
+        }
 
         return newWeight;
     }
@@ -225,8 +246,32 @@ public class DeepNetBuilder
         double neuronValue,
         double weightValue)
     {
-        var delta = -(error) * SigmoidDerivative(neuronValue * weightValue) * neuronValue;
-        var newWeight = weightValue - LearningRate * delta;
+        var delta = 0.0;
+        var newWeight = 0.0;
+
+        if (ActivationFunction == ActivationFunction.Sigmoid)
+        {
+            delta = -(error) * SigmoidDerivative(neuronValue * weightValue) * neuronValue;
+            newWeight = weightValue - LearningRate * delta;
+        }
+
+        if (ActivationFunction == ActivationFunction.ReLU)
+        {
+            delta = -(error) * ReLUDerivative(neuronValue * weightValue) * neuronValue;
+            newWeight = weightValue - LearningRate * delta;
+        }
+
+        if (ActivationFunction == ActivationFunction.Tanh)
+        {
+            delta = -(error) * TanhDerivative(neuronValue * weightValue) * neuronValue;
+            newWeight = weightValue - LearningRate * delta;
+        }
+
+        if (ActivationFunction == ActivationFunction.Linear)
+        {
+            delta = -(error) * LinearDerivative(neuronValue * weightValue) * neuronValue;
+            newWeight = weightValue - LearningRate * delta;
+        }
 
         return newWeight;
     }
@@ -240,6 +285,37 @@ public class DeepNetBuilder
     {
         double fx = Sigmoid(value);
         return fx * (1 - fx);
+    }
+
+    public static double ReLU(double x)
+    {
+        return Math.Max(0, x);
+    }
+
+    public static double ReLUDerivative(double x)
+    {
+        return x > 0 ? 1 : 0;
+    }
+
+    public static double Tanh(double x)
+    {
+        return Math.Tanh(x);
+    }
+
+    public static double TanhDerivative(double x)
+    {
+        double tanhX = Tanh(x);
+        return 1 - tanhX * tanhX;
+    }
+
+    public static double Linear(double x, double slope, double intercept)
+    {
+        return slope * x + intercept;
+    }
+
+    public static double LinearDerivative(double slope)
+    {
+        return slope;
     }
 
     public void Save(string path)
@@ -267,8 +343,10 @@ public class JsonDeepNetModel
 {
     public double LearningRate { get; set; }
     public int[] Layers { get; set; }
+    public double[] Biases { get; set; }
     public List<double[]> HiddenValues { get; set; }
     public List<double[][]> Weights { get; set; }
+    public ActivationFunction ActivationFunction;
 
     public JsonDeepNetModel()
     {
@@ -278,8 +356,11 @@ public class JsonDeepNetModel
     public JsonDeepNetModel(DeepNetBuilder deepNet)
     {
         LearningRate = deepNet.LearningRate;
-        Layers = deepNet.Layers; HiddenValues = deepNet.HiddenValues;
+        Layers = deepNet.Layers;
+        Biases = deepNet.Biases;
+        HiddenValues = deepNet.HiddenValues;
         Weights = deepNet.Weights.SerializeToJsonArray();
+        ActivationFunction = deepNet.ActivationFunction;
     }
 
     public static DeepNetBuilder Deserialize(JsonDeepNetModel model)
@@ -288,8 +369,10 @@ public class JsonDeepNetModel
 
         deepNet.LearningRate = model.LearningRate;
         deepNet.Layers = model.Layers;
+        deepNet.Biases = model.Biases;
         deepNet.HiddenValues = model.HiddenValues;
         deepNet.Weights = model.Weights.DeserializeTo2DArray();
+        deepNet.ActivationFunction = model.ActivationFunction;
 
         return deepNet;
     }
@@ -312,4 +395,12 @@ public class MatrixBuilder
 
         return matrix;
     }
+}
+
+public enum ActivationFunction : byte
+{
+    Sigmoid = 1,
+    ReLU = 2,
+    Tanh = 3,
+    Linear = 4
 }
