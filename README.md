@@ -40,9 +40,13 @@ var layers = new int[3] { 2, 3, 1 };
 ```csharp
 var learningRate = 0.1;
 ```
+- Create a variable to define activation function of neural network layers:
+```csharp
+var activationFunction = ActivationFunction.Sigmoid;
+```
 - Create an instance of class `DeepNetBuilder`
 ```csharp
-var nn = new DeepNetBuilder(layers, learningRate);
+var nn = new DeepNetBuilder(layers, learningRate, activationFunction);
 ```
 Now you have a neural network, ready to learn everything you want.
 
